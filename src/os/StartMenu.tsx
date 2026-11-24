@@ -1,7 +1,7 @@
 import { profile } from "@/content/profile";
 import { useLocale, useT } from "@/i18n/locale";
 import { s } from "@/i18n/strings";
-import { simpleHref } from "@/lib/site";
+import { SHOW_SIMPLE_LINK, simpleHref } from "@/lib/site";
 import { sfx } from "@/sound/sfx";
 import { useScene } from "@/state/scene";
 import { Icon } from "./Icon";
@@ -52,9 +52,8 @@ export function StartMenu({ embedded, onClose }: { embedded: boolean; onClose: (
           <ul>
             {item("lang", "globe", t(s.switchLang), toggleLocale)}
             {item("saver", "screensaver", t(s.screensaver), () => useScene.getState().setSaver(true))}
-            {item("simple", "simple", `${t(s.simpleVersion)} ↗`, () =>
-              window.open(simpleHref(locale), "_blank", "noopener"),
-            )}
+            {SHOW_SIMPLE_LINK &&
+              item("simple", "simple", `${t(s.simpleVersion)} ↗`, () => window.open(simpleHref(locale), "_blank", "noopener"))}
             {item("restart", "restart", t(s.restart), () => {
               useWindows.getState().closeAll();
               useScene.getState().restartOS();

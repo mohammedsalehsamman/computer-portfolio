@@ -1,6 +1,6 @@
 import { useLocale, useT } from "@/i18n/locale";
 import { s } from "@/i18n/strings";
-import { simpleHref } from "@/lib/site";
+import { SHOW_SIMPLE_LINK, simpleHref } from "@/lib/site";
 import { useScene } from "@/state/scene";
 
 /** Overlay controls for the 3D room: hint (or hovered object) in the wide view, way back in the screen view. */
@@ -23,9 +23,11 @@ export function Hud() {
           >
             {hovered ? t(hovered) : t(s.clickComputer)}
           </button>
-          <a className="hud-btn hud-simple" href={simpleHref(locale)}>
-            {t(s.simpleVersion)}
-          </a>
+          {SHOW_SIMPLE_LINK && (
+            <a className="hud-btn hud-simple" href={simpleHref(locale)}>
+              {t(s.simpleVersion)}
+            </a>
+          )}
           <button className="hud-btn hud-lang" onClick={toggle} aria-label={t(s.switchLangLabel)}>
             {t(s.switchLang)}
           </button>

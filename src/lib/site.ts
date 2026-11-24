@@ -2,6 +2,12 @@ import { caseStudies } from "@/content/case-studies";
 import { projects } from "@/content/projects";
 import type { Locale, Project } from "@/content/types";
 
+/**
+ * Show the "Simple version" buttons (room HUD + Start menu)? Hidden for now.
+ * The /simple pages are still generated and listed in the sitemap; set to true to bring the buttons back.
+ */
+export const SHOW_SIMPLE_LINK = false;
+
 /** Plain, crawlable version of the portfolio (generated at build time by the `seo` Vite plugin). */
 export const simpleHref = (locale: Locale) => (locale === "ar" ? "/simple/ar/" : "/simple/");
 
