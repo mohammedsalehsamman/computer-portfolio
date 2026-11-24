@@ -2,6 +2,9 @@ import { caseStudies } from "@/content/case-studies";
 import { projects } from "@/content/projects";
 import type { Locale, Project } from "@/content/types";
 
+/** Plain, crawlable version of the portfolio (generated at build time by the `seo` Vite plugin). */
+export const simpleHref = (locale: Locale) => (locale === "ar" ? "/simple/ar/" : "/simple/");
+
 /** Adapted from portfolio-v2/src/lib/site.ts, without the Next.js and particle-scene parts. */
 export const cvFiles = {
   en: "/cv/Mohammed_Saleh_Samman_CV_Backend_Engineer.pdf",

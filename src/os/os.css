@@ -181,19 +181,22 @@
 .desk-icons {
   list-style: none;
   margin: 0;
-  padding: 10px 6px;
+  padding: 8px 6px;
+  height: 100%;
+  width: max-content;
   display: grid;
-  grid-auto-flow: row;
-  grid-template-columns: 92px;
-  gap: 6px;
+  grid-auto-flow: column;
+  grid-template-rows: repeat(auto-fill, 76px);
+  grid-auto-columns: 92px;
+  gap: 2px 6px;
 }
 .os-root .desk-icon {
   width: 92px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 6px 2px;
+  gap: 3px;
+  padding: 5px 2px;
   background: none;
   border: 1px dotted transparent;
   cursor: pointer;
@@ -945,6 +948,147 @@
   caret-color: #7cfc9a;
 }
 
+/* Mail */
+.mail {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.mail p {
+  margin: 0 !important;
+}
+.mail label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  font-weight: 600;
+  flex: 1;
+}
+.mail-row {
+  display: flex;
+  gap: 12px;
+}
+.mail-to {
+  padding: 4px 8px;
+  background: #fff;
+  font-size: 12.5px;
+  text-align: start;
+}
+.mail-to span {
+  color: var(--muted);
+  margin-inline-end: 4px;
+}
+.field {
+  width: 100%;
+  padding: 5px 7px;
+  font: inherit;
+  font-weight: 400;
+  color: var(--ink);
+  background: #fff;
+  border: 2px solid;
+  border-color: var(--chrome-lo) var(--chrome-hi) var(--chrome-hi) var(--chrome-lo);
+  box-shadow: inset 1px 1px 0 var(--chrome-dk);
+  user-select: text;
+}
+.field:focus {
+  outline: 1px dotted var(--ink);
+  outline-offset: 1px;
+}
+textarea.field {
+  resize: vertical;
+  min-height: 110px;
+}
+.mail-hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+.mail-actions {
+  align-items: center;
+  margin: 0;
+}
+.mail-status {
+  color: #b03a2e;
+  font-size: 12.5px;
+}
+.mail-done {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 12px;
+  height: 100%;
+  text-align: center;
+}
+.mail-check {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  font-size: 38px;
+  color: #fff;
+  background: #3e8e6a;
+  border: 2px solid var(--chrome-dk);
+}
+@media (max-width: 767px) {
+  .os-fullscreen .mail-row {
+    flex-direction: column;
+  }
+}
+
+/* Screensaver */
+.screensaver {
+  position: absolute;
+  inset: 0;
+  z-index: 150000;
+  background: #07090d;
+  cursor: none;
+  outline: none;
+  transition: opacity 0.4s ease;
+}
+.screensaver.is-closing {
+  opacity: 0;
+  cursor: default;
+}
+.screensaver canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ss-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  color: #f4efe1;
+  text-shadow: 0 0 8px #000;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.ss-label strong {
+  font-family: "VT323", "IBM Plex Sans Arabic", monospace;
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1;
+}
+[lang="ar"] .ss-label strong {
+  font-size: 26px;
+  font-weight: 700;
+}
+.ss-label span {
+  font-size: 13px;
+  opacity: 0.75;
+}
+.ss-clock {
+  font-family: "VT323", monospace;
+  font-size: 22px !important;
+  color: #f2c14e;
+  opacity: 1 !important;
+}
+
 /* CRT glass on the 3D screen */
 .crt-overlay {
   position: absolute;
@@ -994,6 +1138,10 @@
     --taskbar-h: 44px;
   }
   .os-fullscreen .desk-icons {
+    width: auto;
+    height: auto;
+    grid-auto-flow: row;
+    grid-template-rows: none;
     grid-template-columns: repeat(auto-fill, 92px);
     justify-content: center;
     padding-top: 18px;

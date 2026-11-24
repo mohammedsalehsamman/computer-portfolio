@@ -3,16 +3,11 @@ import { useT } from "@/i18n/locale";
 import { s } from "@/i18n/strings";
 import { sfx } from "@/sound/sfx";
 import { Icon, type IconName } from "./Icon";
+import { scaleOf } from "./scale";
 import { activeWindowId, useWindows, type Win } from "./windowStore";
 
 type Drag = { mode: "move" | "resize"; px: number; py: number; x: number; y: number; w: number; h: number; scale: number };
 
-/** On-screen pixels per OS pixel: the OS can be scaled by the 3D CSS transform. */
-function scaleOf(el: HTMLElement) {
-  const root = el.closest<HTMLElement>(".os-root");
-  if (!root || !root.offsetWidth) return 1;
-  return root.getBoundingClientRect().width / root.offsetWidth || 1;
-}
 
 export function Window({ win, title, icon, children }: { win: Win; title: string; icon: IconName; children: ReactNode }) {
   const { t } = useT();

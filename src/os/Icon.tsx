@@ -8,6 +8,10 @@ export type IconName =
   | "contact"
   | "resume"
   | "terminal"
+  | "cards"
+  | "mail"
+  | "screensaver"
+  | "simple"
   | "globe"
   | "power"
   | "restart"
@@ -105,6 +109,52 @@ function Paths({ name }: { name: IconName }) {
           <rect x="3" y="5" width="26" height="4" fill="#d6d0c2" stroke={O} strokeWidth="2" />
           <path d="M8 14l4 3-4 3" stroke="#7CFC9A" strokeWidth="2" fill="none" />
           <rect x="14" y="20" width="7" height="2" fill="#7CFC9A" />
+        </>
+      );
+    case "cards":
+      return (
+        <>
+          <g transform="rotate(-14 12 18)">
+            <rect x="4" y="7" width="15" height="21" rx="2" fill="#6b4ea8" stroke={O} strokeWidth="2" />
+            <rect x="7" y="10" width="9" height="15" fill="none" stroke="#e0783f" strokeWidth="1.5" />
+          </g>
+          <g transform="rotate(10 20 16)">
+            <rect x="13" y="4" width="15" height="21" rx="2" fill="#fbf8f1" stroke={O} strokeWidth="2" />
+            <path d="M20.5 9.5c-2 2.6-4 4.3-4 6.2a2.1 2.1 0 0 0 3.8 1.2l-.9 2.6h2.2l-.9-2.6a2.1 2.1 0 0 0 3.8-1.2c0-1.9-2-3.6-4-6.2z" fill="#c0392b" />
+          </g>
+        </>
+      );
+    case "mail":
+      return (
+        <>
+          <path d="M3 13l13-8 13 8v14H3z" fill="#d9d3c3" stroke={O} strokeWidth="2" strokeLinejoin="round" />
+          <rect x="7" y="9" width="18" height="13" fill="#fbf8f1" stroke={O} strokeWidth="1.5" />
+          <rect x="10" y="12" width="10" height="2" fill="#6b4ea8" />
+          <rect x="10" y="16" width="12" height="2" fill="#8c8574" />
+          <path d="M3 13l13 9 13-9" fill="none" stroke={O} strokeWidth="2" strokeLinejoin="round" />
+          <path d="M3 27l10-8M29 27l-10-8" stroke={O} strokeWidth="1.5" />
+          <circle cx="25" cy="7" r="4" fill="#e0783f" stroke={O} strokeWidth="1.5" />
+        </>
+      );
+    case "screensaver":
+      return (
+        <>
+          <rect x="3" y="5" width="26" height="19" rx="2" fill="#141a22" stroke={O} strokeWidth="2" />
+          <rect x="7" y="9" width="6" height="6" fill="#e0783f" />
+          <rect x="17" y="13" width="6" height="6" fill="#6b4ea8" />
+          <rect x="11" y="16" width="4" height="4" fill="#3e8e6a" />
+          <rect x="20" y="8" width="4" height="4" fill="#f2c14e" />
+          <rect x="12" y="24" width="8" height="4" fill="#d9d3c3" stroke={O} strokeWidth="1.5" />
+        </>
+      );
+    case "simple":
+      return (
+        <>
+          <rect x="4" y="4" width="24" height="24" rx="2" fill="#fbf8f1" stroke={O} strokeWidth="2" />
+          <rect x="8" y="9" width="16" height="3" fill="#4a2f78" />
+          <rect x="8" y="15" width="16" height="2" fill="#8c8574" />
+          <rect x="8" y="19" width="12" height="2" fill="#8c8574" />
+          <rect x="8" y="23" width="14" height="2" fill="#8c8574" />
         </>
       );
     case "globe":

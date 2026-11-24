@@ -4,6 +4,7 @@ import { ui } from "@/content/ui";
 import { useT } from "@/i18n/locale";
 import { s } from "@/i18n/strings";
 import { Icon, type IconName } from "../Icon";
+import { useWindows } from "../windowStore";
 
 export default function Contact() {
   const { t } = useT();
@@ -46,7 +47,10 @@ export default function Contact() {
       </ul>
 
       <div className="btn-row">
-        <a className="btn btn-primary" href={`mailto:${profile.email}`}>
+        <button className="btn btn-primary" onClick={() => useWindows.getState().open("mail")}>
+          {t(s.mail.openMail)}
+        </button>
+        <a className="btn" href={`mailto:${profile.email}`}>
           {t(s.sendEmail)}
         </a>
         <button className="btn" onClick={copy}>

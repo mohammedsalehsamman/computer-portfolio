@@ -1,6 +1,7 @@
 import { profile } from "@/content/profile";
 import { useLocale, useT } from "@/i18n/locale";
 import { s } from "@/i18n/strings";
+import { simpleHref } from "@/lib/site";
 import { sfx } from "@/sound/sfx";
 import { useScene } from "@/state/scene";
 import { Icon } from "./Icon";
@@ -8,7 +9,7 @@ import { appMeta, desktopApps } from "./registry";
 import { useWindows } from "./windowStore";
 
 export function StartMenu({ embedded, onClose }: { embedded: boolean; onClose: () => void }) {
-  const { t } = useT();
+  const { t, locale } = useT();
   const toggleLocale = useLocale((st) => st.toggle);
   const open = useWindows((st) => st.open);
 
@@ -50,6 +51,10 @@ export function StartMenu({ embedded, onClose }: { embedded: boolean; onClose: (
           <hr />
           <ul>
             {item("lang", "globe", t(s.switchLang), toggleLocale)}
+            {item("saver", "screensaver", t(s.screensaver), () => useScene.getState().setSaver(true))}
+            {item("simple", "simple", `${t(s.simpleVersion)} ↗`, () =>
+              window.open(simpleHref(locale), "_blank", "noopener"),
+            )}
             {item("restart", "restart", t(s.restart), () => {
               useWindows.getState().closeAll();
               useScene.getState().restartOS();

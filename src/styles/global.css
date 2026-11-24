@@ -86,8 +86,18 @@ body {
 .hud-btn:hover {
   background: #2a2147;
 }
-.hud-back {
+.hud-hint.is-object {
+  animation: none;
+  border-color: #f2c14e;
+  color: #f2c14e;
+}
+.hud-back,
+.hud-simple {
   inset-inline-start: 18px;
+}
+.hud-simple {
+  pointer-events: auto;
+  text-decoration: none;
 }
 .hud-lang {
   inset-inline-end: 18px;

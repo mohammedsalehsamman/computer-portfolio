@@ -1,5 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { DoubleSide } from "three";
+import { s } from "@/i18n/strings";
+import { useScene } from "@/state/scene";
+import { Clickable } from "./Clickable";
+import type { Phase } from "./daylight";
 import { posterTexture, skyTexture } from "./textures";
 
 const WALL_Z = -0.62;
@@ -16,7 +20,7 @@ function Shelf() {
   );
   let x = -0.26;
   return (
-    <group position={[0.72, 1.5, WALL_Z + 0.11]}>
+    <group>
       <mesh castShadow receiveShadow>
         <boxGeometry args={[0.7, 0.025, 0.2]} />
         <meshStandardMaterial color="#5a3d2b" roughness={0.8} />
@@ -39,9 +43,11 @@ function Shelf() {
   );
 }
 
-export function Room() {
+export function Room({ phase }: { phase: Phase }) {
   const poster = useMemo(() => posterTexture(), []);
-  const sky = useMemo(() => skyTexture(), []);
+  const sky = useMemo(() => skyTexture(phase), [phase]);
+  useEffect(() => () => sky.dispose(), [sky]);
+  const open = useScene((st) => st.openFromRoom);
 
   return (
     <group>
@@ -95,8 +101,8 @@ export function Room() {
         </mesh>
       </group>
 
-      {/* Poster */}
-      <group position={[-0.2, 1.68, WALL_Z + 0.008]} rotation={[0, 0, 0.015]}>
+      {/* Poster → About */}
+      <Clickable label={s.room.poster} onActivate={() => open("about")} position={[-0.2, 1.68, WALL_Z + 0.008]} rotation={[0, 0, 0.015]}>
         <mesh position={[0, 0, -0.002]}>
           <planeGeometry args={[0.42, 0.57]} />
           <meshStandardMaterial color="#111" />
@@ -105,9 +111,12 @@ export function Room() {
           <planeGeometry args={[0.4, 0.55]} />
           <meshStandardMaterial map={poster} roughness={0.6} />
         </mesh>
-      </group>
+      </Clickable>
 
-      <Shelf />
+      {/* Bookshelf → Skills */}
+      <Clickable label={s.room.books} onActivate={() => open("skills")} position={[0.72, 1.5, WALL_Z + 0.11]}>
+        <Shelf />
+      </Clickable>
     </group>
   );
 }

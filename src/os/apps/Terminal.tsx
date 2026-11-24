@@ -44,6 +44,8 @@ export default function Terminal() {
           "skills        list skills",
           "contact       how to reach me",
           "resume        open the CV",
+          "mail          send me a message",
+          "solitaire     take a break and play a round",
           "lang          switch English / العربية",
           "date          current date and time",
           "clear         clear the screen",
@@ -73,6 +75,12 @@ export default function Terminal() {
       case "cv":
         open("resume");
         return out("Opening resume…");
+      case "mail":
+        open("mail");
+        return out("Opening Mail…");
+      case "solitaire":
+        open("solitaire");
+        return out("Dealing cards…");
       case "lang":
         toggleLocale();
         return out("Language switched.");

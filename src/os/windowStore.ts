@@ -22,6 +22,9 @@ type WindowState = {
   /** Phone layout: windows open maximized. */
   compact: boolean;
   rtl: boolean;
+  /** Width taken by the desktop icon columns; new windows open beside it. */
+  iconArea: number;
+  setIconArea: (w: number) => void;
   setDesk: (w: number, h: number) => void;
   setLayout: (compact: boolean, rtl: boolean) => void;
   open: (app: AppId, param?: string) => void;
@@ -43,11 +46,14 @@ export const useWindows = create<WindowState>((set, get) => ({
   desk: { w: 1024, h: 732 },
   compact: false,
   rtl: false,
+  iconArea: ICON_COLUMN,
+  setIconArea: (iconArea) => set({ iconArea }),
   setDesk: (w, h) => set({ desk: { w, h } }),
   setLayout: (compact, rtl) => set({ compact, rtl }),
 
   open: (app, param) => {
     const { wins, zTop, desk, compact, rtl } = get();
+    const icons = Math.min(get().iconArea, desk.w / 2);
     const z = zTop + 1;
     const existing = wins.find((w) => w.app === app && w.param === param);
     if (existing) {
@@ -55,11 +61,11 @@ export const useWindows = create<WindowState>((set, get) => ({
       return;
     }
     const meta = appMeta[app];
-    const w = Math.min(meta.w, desk.w - ICON_COLUMN - 12);
+    const w = Math.min(meta.w, desk.w - icons - 12);
     const h = Math.min(meta.h, desk.h - 16);
     const n = wins.filter((x) => !x.minimized).length % 6;
     const off = 18 + n * 28;
-    const x = rtl ? Math.max(0, desk.w - ICON_COLUMN - w - off + 18) : Math.min(ICON_COLUMN + off - 18, desk.w - w);
+    const x = rtl ? Math.max(0, desk.w - icons - w - off + 18) : Math.min(icons + off - 18, desk.w - w);
     const y = Math.max(0, Math.min(12 + n * 24, desk.h - h));
     seq += 1;
     set({

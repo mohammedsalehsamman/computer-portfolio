@@ -5,6 +5,8 @@ import type { MeshStandardMaterial } from "three";
 import { OS } from "@/os/OS";
 import { sfx } from "@/sound/sfx";
 import { useScene } from "@/state/scene";
+import { s } from "@/i18n/strings";
+import { Clickable } from "./Clickable";
 import { DESK_Y, HTML_DISTANCE_FACTOR, MONITOR_POS, SCREEN_H, SCREEN_OFFSET_Y, SCREEN_W, SCREEN_Z } from "./layout";
 import { noteTexture } from "./textures";
 
@@ -113,11 +115,18 @@ function Monitor({ portal }: Portal) {
         <sphereGeometry args={[0.005, 12, 12]} />
         <meshStandardMaterial color="#7cfc9a" emissive="#7cfc9a" emissiveIntensity={booted ? 3 : 0.3} />
       </mesh>
-      {/* Sticky note on the bezel corner */}
-      <mesh position={[0.205, 0.15, 0.027]} rotation={[0, 0, -0.18]}>
-        <planeGeometry args={[0.055, 0.055]} />
-        <meshStandardMaterial map={note} roughness={0.9} />
-      </mesh>
+      {/* Sticky note on the bezel corner → Resume */}
+      <Clickable
+        label={s.room.note}
+        onActivate={() => useScene.getState().openFromRoom("resume")}
+        position={[0.205, 0.15, 0.027]}
+        rotation={[0, 0, -0.18]}
+      >
+        <mesh>
+          <planeGeometry args={[0.055, 0.055]} />
+          <meshStandardMaterial map={note} roughness={0.9} />
+        </mesh>
+      </Clickable>
 
       {/* The OS lives on the glass as real DOM. */}
       <Html

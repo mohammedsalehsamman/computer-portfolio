@@ -1,6 +1,9 @@
 import { RoundedBox } from "@react-three/drei";
 import { useLayoutEffect, useMemo, useRef } from "react";
 import { InstancedMesh, Object3D, type SpotLight } from "three";
+import { s } from "@/i18n/strings";
+import { useScene } from "@/state/scene";
+import { Clickable } from "./Clickable";
 import { DESK_Y } from "./layout";
 
 const plastic = "#d8cfb8";
@@ -58,7 +61,7 @@ function Mouse() {
 
 function Mug() {
   return (
-    <group position={[-0.42, DESK_Y, 0.16]}>
+    <Clickable label={s.room.mug} onActivate={() => useScene.getState().openFromRoom("solitaire")} position={[-0.42, DESK_Y, 0.16]}>
       <mesh position={[0, 0.05, 0]} castShadow>
         <cylinderGeometry args={[0.038, 0.034, 0.1, 28, 1, true]} />
         <meshStandardMaterial color="#e0783f" roughness={0.4} side={2} />
@@ -75,7 +78,7 @@ function Mug() {
         <torusGeometry args={[0.022, 0.006, 10, 20, Math.PI]} />
         <meshStandardMaterial color="#e0783f" roughness={0.4} />
       </mesh>
-    </group>
+    </Clickable>
   );
 }
 
@@ -117,8 +120,15 @@ function Lamp() {
     if (light.current && target.current) light.current.target = target.current;
   }, []);
   const metal = { color: "#2b2d42", metalness: 0.6, roughness: 0.35 };
+  const lampOn = useScene((st) => st.lampOn);
+  const toggle = () => {
+    useScene.getState().toggleLamp();
+    // Read the state again: the snapshot taken before toggling still holds the old value.
+    const on = useScene.getState().lampOn;
+    useScene.getState().setHovered(on ? s.room.lampOn : s.room.lampOff);
+  };
   return (
-    <group position={[0.68, DESK_Y, -0.22]}>
+    <Clickable label={lampOn ? s.room.lampOn : s.room.lampOff} onActivate={toggle} position={[0.68, DESK_Y, -0.22]}>
       <mesh position={[0, 0.01, 0]} castShadow>
         <cylinderGeometry args={[0.075, 0.085, 0.02, 32]} />
         <meshStandardMaterial {...metal} />
@@ -141,14 +151,19 @@ function Lamp() {
         </mesh>
         <mesh position={[0, -0.03, 0]}>
           <sphereGeometry args={[0.022, 16, 12]} />
-          <meshStandardMaterial color="#fff3d6" emissive="#ffd59a" emissiveIntensity={4} toneMapped={false} />
+          <meshStandardMaterial
+            color={lampOn ? "#fff3d6" : "#8f8a7c"}
+            emissive="#ffd59a"
+            emissiveIntensity={lampOn ? 4 : 0}
+            toneMapped={false}
+          />
         </mesh>
       </group>
       <spotLight
         ref={light}
         position={[-0.25, 0.31, 0.11]}
         color="#ffcf8a"
-        intensity={3.2}
+        intensity={lampOn ? 3.2 : 0}
         distance={3}
         angle={0.75}
         penumbra={0.65}
@@ -158,14 +173,19 @@ function Lamp() {
         shadow-bias={-0.0004}
       />
       <object3D ref={target} position={[-0.55, -0.1, 0.35]} />
-    </group>
+    </Clickable>
   );
 }
 
 function Floppies() {
   const colors = ["#2b2d42", "#4a2f78", "#3e8e6a", "#e0783f"];
   return (
-    <group position={[0.4, DESK_Y, -0.06]} rotation={[0, 0.35, 0]}>
+    <Clickable
+      label={s.room.floppies}
+      onActivate={() => useScene.getState().openFromRoom("projects")}
+      position={[0.4, DESK_Y, -0.06]}
+      rotation={[0, 0.35, 0]}
+    >
       {colors.map((c, i) => (
         <group key={c} position={[(i % 2) * 0.004, 0.0025 + i * 0.0045, 0]} rotation={[0, i * 0.08, 0]}>
           <mesh castShadow receiveShadow>
@@ -186,13 +206,18 @@ function Floppies() {
           )}
         </group>
       ))}
-    </group>
+    </Clickable>
   );
 }
 
 function Notebook() {
   return (
-    <group position={[-0.48, DESK_Y, -0.12]} rotation={[0, -0.25, 0]}>
+    <Clickable
+      label={s.room.notebook}
+      onActivate={() => useScene.getState().openFromRoom("experience")}
+      position={[-0.48, DESK_Y, -0.12]}
+      rotation={[0, -0.25, 0]}
+    >
       <mesh position={[0, 0.01, 0]} castShadow receiveShadow>
         <boxGeometry args={[0.2, 0.02, 0.27]} />
         <meshStandardMaterial color="#4a2f78" roughness={0.8} />
@@ -205,7 +230,43 @@ function Notebook() {
         <cylinderGeometry args={[0.004, 0.004, 0.15, 8]} />
         <meshStandardMaterial color="#f2c14e" roughness={0.5} />
       </mesh>
-    </group>
+    </Clickable>
+  );
+}
+
+/** A sealed letter on the desk → Mail. */
+function Envelope() {
+  const paper = "#f4efe1";
+  const line = "#9a9381";
+  return (
+    <Clickable
+      label={s.room.envelope}
+      onActivate={() => useScene.getState().openFromRoom("mail")}
+      position={[-0.3, DESK_Y, 0.38]}
+      rotation={[0, 0.35, 0]}
+    >
+      <mesh position={[0, 0.003, 0]} castShadow receiveShadow>
+        <boxGeometry args={[0.15, 0.006, 0.095]} />
+        <meshStandardMaterial color={paper} roughness={0.85} />
+      </mesh>
+      {/* Flap edges */}
+      {[1, -1].map((side) => (
+        <mesh key={side} position={[side * 0.037, 0.0062, -0.0215]} rotation={[0, side * -0.55, 0]}>
+          <boxGeometry args={[0.088, 0.0005, 0.0025]} />
+          <meshStandardMaterial color={line} />
+        </mesh>
+      ))}
+      {/* Wax seal */}
+      <mesh position={[0, 0.0068, 0.002]}>
+        <cylinderGeometry args={[0.011, 0.011, 0.002, 20]} />
+        <meshStandardMaterial color="#b4567a" roughness={0.4} />
+      </mesh>
+      {/* Stamp */}
+      <mesh position={[0.056, 0.0063, 0.032]}>
+        <boxGeometry args={[0.022, 0.0006, 0.018]} />
+        <meshStandardMaterial color="#e0783f" />
+      </mesh>
+    </Clickable>
   );
 }
 
@@ -219,6 +280,7 @@ export function Props() {
       <Lamp />
       <Floppies />
       <Notebook />
+      <Envelope />
     </group>
   );
 }
